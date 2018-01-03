@@ -15,10 +15,23 @@ class BCSLinkedList
 private:
 	KeyValNode<K, V> *head;
 public:
-	BCSLinkedList() { head = NULL; }
-	~BCSLinkedList() {}
+	BCSLinkedList():head(NULL) { }
+	~BCSLinkedList()
+	{
+		if (head != NULL)
+		{
+			KeyValNode<K, V> *deleteNode = head;
+			while (head->nextNode != NULL)
+			{
+				head = head->nextNode;
+				delete deleteNode;
+				deleteNode = head;
+			}
+			delete deleteNode;
+		}
+	}
 
-	void Insert(K key, V value)
+	void Insert(const K& key,const V& value)
 	{
 		KeyValNode<K, V> *newNode = new KeyValNode<K, V>;
 		newNode->nextNode = NULL;
@@ -39,7 +52,7 @@ public:
 		}		
 	}
 
-	void Remove(K key)
+	void Remove(const K& key)
 	{
 		if (head == NULL)
 			return;
@@ -70,10 +83,10 @@ public:
 		}
 	}
 
-	V Find(K key)
+	V Find(const K& key)
 	{
 		if (head == NULL)
-			return -9999;
+			return -9998;
 
 		KeyValNode<K, V> *temp = head;
 		do
@@ -83,12 +96,12 @@ public:
 				return temp->value;
 			}
 			temp = temp->nextNode;
-		} while (temp->nextNode != NULL);
+		} while (temp != NULL);
 
 		return -9999;
 	}
 
-	void ChangeValue(K key, V value)
+	void ChangeValue(const K& key, const V& value)
 	{
 		KeyValNode<K, V> *temp = head;
 

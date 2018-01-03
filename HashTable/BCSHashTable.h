@@ -11,24 +11,23 @@ private:
 	int size;
 	BCSLinkedList<K,V> *list;
 public:
-	BCSHashTable() { init(100); }
-	BCSHashTable(int tableSize) { tableSize > 1 ? init(tableSize) : init(2); }
-	~BCSHashTable() {}
+	BCSHashTable() : tempKey(NULL) { init(100); }
+	BCSHashTable(int tableSize) : tempKey(NULL) { tableSize > 1 ? init(tableSize) : init(2); }
+	~BCSHashTable() { delete[] list; }
 
 	void init(int tableSize)
 	{
-		tempKey = NULL;
 		size = tableSize;
 		list = new BCSLinkedList<K, V>[tableSize];
 	}
 
-	BCSHashTable<K,V> operator [](K key)
+	BCSHashTable<K,V> operator [](const K& key)
 	{
 		tempKey = key;
 		return *this;
 	}
 
-	void operator =(V value)
+	void operator =(const V& value)
 	{
 		if (tempKey != NULL)
 		{
@@ -37,13 +36,13 @@ public:
 		}
 	}
 
-	void Remove(K key){ list[convertIndex(key)].Remove(key); }
+	void Remove(const K& key){ list[convertIndex(key)].Remove(key); }
 
-	V Find(K key) { return list[convertIndex(key)].Find(key); }
+	V Find(const K& key) { return list[convertIndex(key)].Find(key); }
 
-	void ChangeValue(K key, V value) { list[convertIndex(key)].ChangeValue(key,value); }
+	void ChangeValue(const K& key, const V& value) { list[convertIndex(key)].ChangeValue(key,value); }
 
-	int convertIndex(K key) { cout << (key % (size - 1)) << endl;  return (key % (size - 1)); }
+	int convertIndex(const K& key) { return (key % size); }
 };
 
 
@@ -55,22 +54,24 @@ private:
 	int size;
 	BCSLinkedList<std::string, V> *list;
 public:
-	BCSHashTable() {}
-	BCSHashTable(int tableSize)
+	BCSHashTable() : tempKey("") { init(100); }
+	BCSHashTable(int tableSize) : tempKey("") { tableSize > 1 ? init(tableSize) : init(2); }
+
+	void init(int tableSize)
 	{
-		tempKey = "";
 		size = tableSize;
 		list = new BCSLinkedList<std::string, V>[tableSize];
 	}
+
 	~BCSHashTable() {}
 
-	BCSHashTable<std::string, V> operator [](std::string key)
+	BCSHashTable<std::string, V> operator [](const std::string& key)
 	{
 		tempKey = key;
 		return *this;
 	}
 
-	void operator =(V value)
+	void operator =(const V& value)
 	{
 		if (tempKey != "")
 		{
@@ -79,17 +80,17 @@ public:
 		}
 	}
 
-	void Remove(std::string key) { list[convertIndex(key)].Remove(key); }
+	void Remove(const std::string& key) { list[convertIndex(key)].Remove(key); }
 
-	V Find(std::string key) { return list[convertIndex(key)].Find(key); }
+	V Find(const std::string& key) { return list[convertIndex(key)].Find(key); }
 
-	void ChangeValue(std::string key, V value) { list[convertIndex(key)].ChangeValue(key, value); }
+	void ChangeValue(const std::string& key, const V& value) { list[convertIndex(key)].ChangeValue(key, value); }
 
-	int convertIndex(std::string key)
+	int convertIndex(const std::string& key)
 	{
 		int temp = 0;
 		for (int i = 0; i < key.size(); i++)
 			temp += key[i];
-		return (temp % (size - 1));
+		return (temp % size);
 	}
 };
