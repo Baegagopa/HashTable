@@ -2,7 +2,7 @@
 #include <iostream>
 #include "BCSLinkedList.h"
 
-
+//
 template  <typename  K, typename  V>
 class BCSHashTable
 {
@@ -53,6 +53,7 @@ private:
 	std::string tempKey;
 	int size;
 	BCSLinkedList<std::string, V> *list;
+
 public:
 	BCSHashTable() : tempKey("") { init(100); }
 	BCSHashTable(int tableSize) : tempKey("") { tableSize > 1 ? init(tableSize) : init(2); }
